@@ -1,7 +1,12 @@
 package com.article.math;
 
 /**
+ * {@code Vector 3D} class holds 3 integers, being <em>x</em>, <em>y</em> and <em>z</em>
+ * <hr>
+ * This class could be treated as a coordinate or a {@code math vector} having no coordinates
  * 
+ * @version 1.8
+ * @since 1.0
  */
 public class Vec3F {
 	protected float x;
@@ -66,10 +71,47 @@ public class Vec3F {
 	}
 	
 	/**
+	 * Returns the {@code sine} of this vector by dividing {@code x}[Adjacent] over
+	 * {@code length}[Hypotenuse]
+	 * 
+	 * @return
+	 * Adjacent {@code over} Hypotenuse
+	 */
+	public final float sin() {
+		return x / length();
+	}
+	
+	/**
+	 * Returns the {@code cosine} of this vector by dividing {@code y}[Opposite] over
+	 * {@code length}[Hypotenuse]
+	 * 
+	 * @return
+	 * Opposite {@code over} Hypotenuse
+	 */
+	public final float cos() {
+		return y / length();
+	}
+	
+	/**
+	 * Returns the {@code tangent} of this vector by dividing {@code y}[Opposite] over
+	 * {@code x}[Adjacent]
+	 * 
+	 * @return
+	 * Opposite {@code over} Adjacent
+	 * 
+	 * @see #slope()
+	 */
+	public final float tan() {
+		return y / x;
+	}
+	
+	/**
 	 * Normalizes this {@code vector 3D Float}
 	 * 
 	 * @return
 	 * Normalized vector
+	 * 
+	 * @see #fastNormalize()
 	 */
 	public final Vec3F normalize() {
 		// Hypoteneuse_
@@ -85,6 +127,29 @@ public class Vec3F {
 		newVec3F.x = x / length;
 		newVec3F.y = y / length;
 		newVec3F.z = z / length;
+		
+		return newVec3F;
+	}
+	
+	/**
+	 * Normalizes this {@code vector 3D}
+	 * 
+	 * @return
+	 * Normalized vector
+	 * 
+	 * @see #normalize()
+	 */
+	public final Vec3F fastNormalize() {
+		// Vector 3D Float to return
+		final Vec3F newVec3F = new Vec3F();
+		
+		// Get the inverse square root of length
+		final float inverseSquareRoot = Mathf.fastInverseSqrt(x * x + y * y + z * z);
+		
+		// Sets the value
+		newVec3F.x = x * inverseSquareRoot;
+		newVec3F.y = y * inverseSquareRoot;
+		newVec3F.z = z * inverseSquareRoot;
 		
 		return newVec3F;
 	}
@@ -355,6 +420,14 @@ public class Vec3F {
 	}
 	
 	/**
+	 * @return
+	 * {@code Vector float} that only contains {@code x} and {@code y} value, removing {@code z}
+	 */
+	public Vec2 toVector2D() {
+		return new Vec2((int)x, (int)y);
+	}
+	
+	/**
 	 * Returns whether {@code this} and {@code another Vector 3D Float} has the same {@code x}, {@code y} and {@code z} value
 	 * 
 	 * @param anotherVec3F
@@ -434,5 +507,27 @@ public class Vec3F {
 	 */
 	public void setZ(float z) {
 		this.z = z;
+	}
+	
+	// ***************************************************************************
+	// STATIC METHODS
+	// ***************************************************************************
+	
+	/**
+	 * Swaps the value of two given vectors
+	 * 
+	 * @param vector1
+	 * - {@code first} vector
+	 * 
+	 * @param vector2
+	 * - {@code second} vector
+	 * 
+	 * @since WIP 1.3
+	 */
+	public static final void swapVector(final Vec3F vector1, final Vec3F vector2) {
+		final Vec3F storedVector1 = vector1.clone();
+		
+		vector1.set( vector2 );
+		vector2.set( storedVector1 );
 	}
 }

@@ -52,7 +52,7 @@ public class Triangle3D {
 		g.drawLine((int)pointB.getX(), (int)pointB.getY(), 
 				   (int)pointC.getX(), (int)pointC.getY());
 		
-		g.drawLine((int)pointC.getX(), (int)pointC.getY(), 
+		g.drawLine((int)pointC.getX(), (int)pointC.getY(),
 				   (int)pointA.getX(), (int)pointA.getY());
 	}
 	

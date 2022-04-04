@@ -1,7 +1,12 @@
 package com.article.math;
 
 /**
+ * {@code Vector 3D Float} class holds 3 floats, being <em>x</em>, <em>y</em> and <em>z</em>
+ * <hr>
+ * This class could be treated as a coordinate or a {@code math vector} having no coordinates
  * 
+ * @version 1.8
+ * @since 1.0
  */
 public class Vec3 {
 	protected int x;
@@ -66,10 +71,47 @@ public class Vec3 {
 	}
 	
 	/**
+	 * Returns the {@code sine} of this vector by dividing {@code x}[Adjacent] over
+	 * {@code length}[Hypotenuse]
+	 * 
+	 * @return
+	 * Adjacent {@code over} Hypotenuse
+	 */
+	public final int sin() {
+		return x / length();
+	}
+	
+	/**
+	 * Returns the {@code cosine} of this vector by dividing {@code y}[Opposite] over
+	 * {@code length}[Hypotenuse]
+	 * 
+	 * @return
+	 * Opposite {@code over} Hypotenuse
+	 */
+	public final int cos() {
+		return y / length();
+	}
+	
+	/**
+	 * Returns the {@code tangent} of this vector by dividing {@code y}[Opposite] over
+	 * {@code x}[Adjacent]
+	 * 
+	 * @return
+	 * Opposite {@code over} Adjacent
+	 * 
+	 * @see #slope()
+	 */
+	public final int tan() {
+		return y / x;
+	}
+	
+	/**
 	 * Normalizes this {@code vector 3D}
 	 * 
 	 * @return
 	 * Normalized vector
+	 * 
+	 * @see #fastNormalize()
 	 */
 	public final Vec3 normalize() {
 		// Hypoteneuse_
@@ -85,6 +127,29 @@ public class Vec3 {
 		newVec3.x = x / length;
 		newVec3.y = y / length;
 		newVec3.z = z / length;
+		
+		return newVec3;
+	}
+	
+	/**
+	 * Normalizes this {@code vector 3D}
+	 * 
+	 * @return
+	 * Normalized vector
+	 * 
+	 * @see #normalize()
+	 */
+	public final Vec3 fastNormalize() {
+		// Vector 3D to return
+		final Vec3 newVec3 = new Vec3();
+		
+		// Get the inverse square root of length
+		final float inverseSquareRoot = Mathf.fastInverseSqrt(x * x + y * y + z * z);
+		
+		// Sets the value
+		newVec3.x = (int)(x * inverseSquareRoot);
+		newVec3.y = (int)(y * inverseSquareRoot);
+		newVec3.z = (int)(z * inverseSquareRoot);
 		
 		return newVec3;
 	}
@@ -405,5 +470,27 @@ public class Vec3 {
 	 */
 	public void setZ(int z) {
 		this.z = z;
+	}
+
+	// ***************************************************************************
+	// STATIC METHODS
+	// ***************************************************************************
+	
+	/**
+	 * Swaps the value of two given vectors
+	 * 
+	 * @param vector1
+	 * - {@code first} vector
+	 * 
+	 * @param vector2
+	 * - {@code second} vector
+	 * 
+	 * @since WIP 1.3
+	 */
+	public static final void swapVector(final Vec3 vector1, final Vec3 vector2) {
+		final Vec3 storedVector1 = vector1.clone();
+		
+		vector1.set( vector2 );
+		vector2.set( storedVector1 );
 	}
 }

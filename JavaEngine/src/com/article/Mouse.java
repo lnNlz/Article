@@ -45,10 +45,18 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
 	public void mouseReleased(MouseEvent e) {
 	}
 	
+	/**
+	 * @return
+	 * {@code X} coordinate of the Mouse
+	 */
 	public static int getX() {
 		return mousePosition.getX();
 	}
-	// TODO: doc this
+
+	/**
+	 * @return
+	 * {@code Y} coordinate of the Mouse
+	 */
 	public static int getY() {
 		return mousePosition.getX();
 	}

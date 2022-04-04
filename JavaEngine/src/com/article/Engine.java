@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import com.article.gfx.Renderer;
+
 /**
  * Main class a.k.a. foundation of the engine,
  * this holds several useful methods
@@ -33,6 +35,7 @@ public final class Engine extends Canvas implements Runnable {
 	
 	// Others
 	private Graphics2D graphics2D;
+	private Renderer renderer;
 	
 	// Booleans
 	private static boolean printFPSandTPS = true;
@@ -97,6 +100,10 @@ public final class Engine extends Canvas implements Runnable {
 			frame = null;
 		}
 		
+		// Destroy all the running objects
+		objects.forEach(e -> e.onDestroy());
+		objects.clear();
+		
 		// Thread stopping
 		thread.join();
 		thread = null;
@@ -137,26 +144,30 @@ public final class Engine extends Canvas implements Runnable {
 			}
 			
 			
-			// Clean this part
-			final BufferStrategy bufferStrategy = getBufferStrategy();
-			if(bufferStrategy == null) {
-				// TODO: allow custom buffer_int
-				createBufferStrategy(3);
-				
-				continue;
+			if(frame != null || frame.isVisible()) {
+				// Clean this part
+				final BufferStrategy bufferStrategy = getBufferStrategy();
+				if(bufferStrategy == null) {
+					createBufferStrategy(3);
+					
+					continue;
+				}
+			
+				graphics2D = (Graphics2D)bufferStrategy.getDrawGraphics();
+			
+				// Clears the canvas
+				if(autoClearCanvas) renderer.fillScreen();
+			
+				// Render objects
+				for(final Obj obj : objects) obj.onRender(renderer);
+			
+				// Render everything
+				renderer.render(graphics2D);
+			
+				// Clean
+				graphics2D.dispose();
+				bufferStrategy.show();
 			}
-			
-			graphics2D = (Graphics2D)bufferStrategy.getDrawGraphics();
-			
-			// Clears the canvas
-			if(autoClearCanvas)
-				graphics2D.clearRect(0, 0, getWidth(), getHeight());
-			
-			// Render objects
-			for(final Obj obj : objects) obj.onRender(graphics2D);
-			
-			graphics2D.dispose();
-			bufferStrategy.show();
 			
 			// Frame
 			FPS++;
@@ -211,6 +222,8 @@ public final class Engine extends Canvas implements Runnable {
 		frame.setVisible(false);
 		
 		this.frame = frame;
+		renderer = new Renderer(frame.getWidth(), frame.getHeight());
+		
 		return true;
 	}
 	
@@ -278,7 +291,7 @@ public final class Engine extends Canvas implements Runnable {
 		if(obj == null) return false;
 		
 		if(objects.remove(obj)) {
-			obj.onStart();
+			obj.onDestroy();
 			return true;
 		}
 		

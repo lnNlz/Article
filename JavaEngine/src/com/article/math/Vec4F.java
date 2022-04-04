@@ -75,6 +75,8 @@ public class Vec4F {
 	 * 
 	 * @return
 	 * Normalized vector
+	 * 
+	 * @see #fastNormalize()
 	 */
 	public final Vec4F normalize() {
 		// Hypoteneuse_
@@ -91,6 +93,30 @@ public class Vec4F {
 		newVec4F.y = y / length;
 		newVec4F.z = z / length;
 		newVec4F.w = w / length;
+		
+		return newVec4F;
+	}
+	
+	/**
+	 * Normalizes this {@code vector 4D Float}
+	 * 
+	 * @return
+	 * Normalized vector
+	 * 
+	 * @see #normalize()
+	 */
+	public final Vec4F fastNormalize() {
+		// Vector 4D to return
+		final Vec4F newVec4F = new Vec4F();
+		
+		// Get the inverse square root of length
+		final float inverseSquareRoot = Mathf.fastInverseSqrt(x * x + y * y + z * z + w * w);
+		
+		// Sets the value
+		newVec4F.x = x * inverseSquareRoot;
+		newVec4F.y = y * inverseSquareRoot;
+		newVec4F.z = z * inverseSquareRoot;
+		newVec4F.w = w * inverseSquareRoot;
 		
 		return newVec4F;
 	}
@@ -418,5 +444,27 @@ public class Vec4F {
 	 */
 	public void setW(float w) {
 		this.w = w;
+	}
+	
+	// ***************************************************************************
+	// STATIC METHODS
+	// ***************************************************************************
+	
+	/**
+	 * Swaps the value of two given vectors
+	 * 
+	 * @param vector1
+	 * - {@code first} vector
+	 * 
+	 * @param vector2
+	 * - {@code second} vector
+	 * 
+	 * @since WIP 1.3
+	 */
+	public static final void swapVector(final Vec4F vector1, final Vec4F vector2) {
+		final Vec4F storedVector1 = vector1.clone();
+		
+		vector1.set( vector2 );
+		vector2.set( storedVector1 );
 	}
 }

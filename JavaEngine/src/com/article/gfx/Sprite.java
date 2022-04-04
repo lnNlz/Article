@@ -1,12 +1,24 @@
 package com.article.gfx;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * {@code Sprite} class holds an image that could be used as
+ * texture and more
+ * <br>
+ * This class contains several methods including {@code crop()} to crop
+ * the image and {@code render()} to render the image
+ * 
+ * @version 1.0
+ * @since WIP 1.1
+ */
 public class Sprite {
 	protected BufferedImage image;
 	
@@ -38,7 +50,6 @@ public class Sprite {
 		this.image = sprite.image;
 	}
 	
-	// TODO: Add more features to this class
 	/**
 	 * Crops this' {@code image} and returns a new Sprite
 	 * 
@@ -59,6 +70,15 @@ public class Sprite {
 	 */
 	public Sprite crop(final int beginningX, final int beginningY, final int endingX, final int endingY) {
 		return new Sprite(image.getSubimage(beginningX, beginningY, endingX, endingY));
+	}
+	
+	public BufferedImage resize(int newWidth, int newHeight) {
+		BufferedImage outputImage = new BufferedImage(image.getWidth() * newWidth, image.getHeight() * newHeight, image.getType());
+		final AffineTransformOp ato = new AffineTransformOp(AffineTransform.getScaleInstance(newWidth, newHeight), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+//		final AffineTransformOp ato = new AffineTransformOp(AffineTransform.getScaleInstance(newWidth, newHeight), scaleType);
+		outputImage = ato.filter(image, outputImage);
+		
+		return outputImage;
 	}
 	
 	/**
@@ -115,6 +135,60 @@ public class Sprite {
 	 */
 	public int getHeight() {
 		return image.getHeight();
+	}
+	
+	/**
+	 * Sets the pixel color at a given coordinate
+	 * 
+	 * @param x
+	 * - {@code X} pixel
+	 * 
+	 * @param y
+	 * - {@code Y} pixel
+	 * 
+	 * @param color
+	 * - {@code Color} of the target pixel
+	 */
+	public void setRGB(final int x, final int y, final int color) {
+		image.setRGB(x, y, color);
+	}
+	
+	/**
+	 * Returns the RGB value of the pixel at a given coordinate
+	 * 
+	 * @param x
+	 * - {@code X} pixel
+	 * 
+	 * @param y
+	 * - {@code Y} pixel
+	 * 
+	 * @return
+	 * {@code RGB} value at x and y coordinate
+	 */
+	public int getRGB(final int x, final int y) {
+		return image.getRGB(x, y);
+	}
+	
+	/**
+	 * Sets {@code this}' image to the image stored in the sprite specified
+	 * 
+	 * @param anotherSprite
+	 * - {@code Sprite} that contains the image to be copied
+	 */
+	public void set(final Sprite anotherSprite) {
+		if(anotherSprite == null || anotherSprite.image == null) throw new IllegalArgumentException("Null sprite!");
+		
+		image = anotherSprite.getImage();
+	}
+	
+	/**
+	 * Sets {@code this}' image to the image specified
+	 * 
+	 * @param anotherSprite
+	 * - {@code Image} to be copied
+	 */
+	public void set(final BufferedImage anotherImage) {
+		set(new Sprite(anotherImage));
 	}
 	
 	/**

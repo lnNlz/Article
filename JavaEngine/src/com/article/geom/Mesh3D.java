@@ -36,6 +36,9 @@ public class Mesh3D {
 	// Mesh scale
 	protected final Vec3F scale;
 	
+	// Viewing point
+	protected float viewingPoint;
+	
 	// Real triangle coordinates
 	protected final ArrayList<Triangle4D> triangles;
 	protected final ArrayList<Triangle4D> trianglesToProject;
@@ -154,12 +157,12 @@ public class Mesh3D {
 			// Normalize
 			// Normalize the vector to work with it easier
 			final Vec3F normalVector = new Vec3F( delta1.crossProduct(delta2) );
-			normalVector.set( normalVector.normalize() );
+			normalVector.set( normalVector.fastNormalize() );
 				
 			// Checks if triangle is visible
 			// Checks whether the ray that camera casts hits the triangle, if not... don't render it
 			final Vec3F rayCast = translatedTriangle.pointA.subtract(Camera.get().position.toVector4DFloat()).toVector3DFloat();
-			if(normalVector.dotProduct( rayCast ) > 0.0F) continue;
+			if(normalVector.dotProduct( rayCast ) > viewingPoint) continue;
 			
 			// Triangle to view
 			// Transform points depending on the current position of the camera from the view matrix
@@ -186,7 +189,7 @@ public class Mesh3D {
 			// Handle lighting
 			// Only work with lighting if enabled
 			if(applyLighting) {
-				final Vec3F normalizedLight = Camera.get().direction.normalize();
+				final Vec3F normalizedLight = Camera.get().direction.fastNormalize();
 				brightness = normalVector.dotProduct(normalizedLight);
 				brightness = brightness < 0 ? 0 : brightness > 255 ? 255 : brightness;
 				
@@ -410,5 +413,23 @@ public class Mesh3D {
 	 */
 	public void setColor(final Color newColor) {
 		color = newColor;
+	}
+
+	/**
+	 * @return
+	 * 0 {@code Mesh} viewing point
+	 */
+	public float getViewingPoint() {
+		return viewingPoint;
+	}
+
+	/**
+	 * Sets the mesh {@code viewing point}
+	 * 
+	 * @param viewingPoint
+	 * - {@code New} mesh viewing point
+	 */
+	public void setViewingPoint(float viewingPoint) {
+		this.viewingPoint = viewingPoint;
 	}
 }

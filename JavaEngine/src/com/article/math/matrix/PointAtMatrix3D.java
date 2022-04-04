@@ -12,7 +12,6 @@ public final class PointAtMatrix3D extends MatrixF {
 		final Vec3F newForwardVector = destination.subtract(originalPosition).normalize();
 		
 		// New Up vector calculation
-		// TODO: Clean this again if this thing don't works
 		final Vec3F newUpVector = upDirection.subtract(newForwardVector.multiply(upDirection.dotProduct(newForwardVector))).normalize();
 		
 		// New Right vector calculation

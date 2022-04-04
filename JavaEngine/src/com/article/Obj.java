@@ -1,6 +1,6 @@
 package com.article;
 
-import java.awt.Graphics2D;
+import com.article.gfx.Renderer;
 
 /**
  * {@code Object} interface acts as a blueprint for Objects,
@@ -26,18 +26,15 @@ public interface Obj {
 	 * @param elapsedTime
 	 * - Elapsed time : {@code seconds}
 	 */
-	public void onUpdate(final double deltaTime);
+	public default void onUpdate(final double deltaTime) {}
 	
 	/**
 	 * Called after {@code onUpdate()} method, rendering stuffs will be handled in this method
 	 */
-	public default void onRender(final Graphics2D g) {}
+	public default void onRender(final Renderer g) {}
 	
-	// Other override-able methods
 	/**
-	 * Called after removing this {@code object} from the list ({@code JavaEngine.get().re()})
+	 * Called after removing this {@code object} from the list ({@code JavaEngine.get().remove()})
 	 */
 	public default void onDestroy() {}
-	public default void onPause() {}
-	public default void onResume() {}
 }

@@ -2,7 +2,7 @@ package com.article;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * {@code Key} class handles key input made the user,
@@ -13,10 +13,10 @@ import java.util.LinkedList;
  */
 public final class Key implements KeyListener {
 	// Stack of key pressed
-	private static final LinkedList<Integer> keyPressed = new LinkedList<Integer> ();
+	private static final ArrayList<Integer> keyPressed = new ArrayList<Integer> ();
 	
 	// Key pressed
-	private static final LinkedList<Integer> keyPressedOnce = new LinkedList<Integer> ();
+	private static final ArrayList<Integer> keyPressedOnce = new ArrayList<Integer> ();
 	
 	protected Key() {}
 	
